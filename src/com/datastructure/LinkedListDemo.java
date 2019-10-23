@@ -1,4 +1,4 @@
-package data.structure;
+package com.datastructure;
 
 
 public class LinkedListDemo {
