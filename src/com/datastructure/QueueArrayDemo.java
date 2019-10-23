@@ -1,12 +1,12 @@
 package com.datastructure;
 
-public class QueueDemo {
+public class QueueArrayDemo {
     private Object[] data;
     private int capacity;
     private int head = 0;
     private int tail = 0;
 
-    public QueueDemo(int capacity) {
+    public QueueArrayDemo(int capacity) {
         this.data = new Object[capacity];
         this.capacity = capacity;
     }
@@ -41,7 +41,7 @@ public class QueueDemo {
     }
 
     public static void main(String[] args) {
-        QueueDemo queueDemo = new QueueDemo(3);
+        QueueArrayDemo queueDemo = new QueueArrayDemo(3);
         System.out.println(queueDemo.enqueue(1));
         System.out.println(queueDemo.dequeue());
         System.out.println(queueDemo.enqueue(2));
