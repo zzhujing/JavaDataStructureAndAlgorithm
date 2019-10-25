@@ -1,4 +1,4 @@
-package com.concurrent;
+package com.concurrent.chapter1;
 
 
 /**
@@ -10,7 +10,7 @@ package com.concurrent;
  *      因为Thread类设计用的是模板方法模式，在start()中调用run()的前后会执行一些增强，比如调用start0()启动线程
  * new Thread()  : null -> new
  * start() :  new -> runnable
- * Dispather获取到CPU的调度权 ： runnable -> running
+ * Dispatcher获取到CPU的调度权 ： runnable -> running
  * Sleep或者其他阻塞 ： running -> blocked -> runnable(阻塞结束需要重新回到runnable等待CPU调度)
  * 执行完毕，获取程序断开 ： running , blocked , runnable 都可能直接-> terminated
  */
@@ -44,6 +44,6 @@ class TemplateMethod{
             protected void wrapPrint(String message) {
                 System.out.println(message);
             }
-        }.print("Hello,TemplateMthod");
+        }.print("Hello,TemplateMethod");
     }
 }
