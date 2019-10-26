@@ -1,7 +1,5 @@
 package com.concurrent.chapter4;
 
-import org.omg.PortableServer.THREAD_POLICY_ID;
-
 /**
  * @author : hujing
  * @date : 2019/10/25
@@ -15,14 +13,6 @@ public class ThreadInterruptDemo {
         Thread mainThread = Thread.currentThread();
         Thread t = new Thread(() -> {
             while (true) {
-//                    synchronized (MONITOR) {
-//                        try {
-//                            MONITOR.wait(10);
-//                        } catch (InterruptedException e) {
-//                            System.out.println("中断..");
-//                            e.printStackTrace();
-//                        }
-//                    }
                 }
         });
 
@@ -42,6 +32,7 @@ public class ThreadInterruptDemo {
         try {
             t.join();
         } catch (InterruptedException e) {
+            System.out.println("join interrupt");
             e.printStackTrace();
         }
         System.out.println("Main Thread Done..");

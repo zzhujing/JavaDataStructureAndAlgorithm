@@ -10,11 +10,11 @@ import java.util.stream.IntStream;
 public class ThreadJoinDemo {
     public static void main(String[] args) throws InterruptedException {
         Thread t1 = new Thread(() -> {
-            IntStream.range(1,1000).forEach(System.out::println);
+            IntStream.range(1, 1000).forEach(System.out::println);
+            System.out.println("child thread finish done.");
         });
         t1.start();
         t1.join(); //Main线程会等待t1结束之后再开始执行
-        System.out.println("child thread finish done.");
-        IntStream.range(1,1000).forEach(System.out::println);
+        IntStream.range(1, 1000).forEach(System.out::println);
     }
 }
