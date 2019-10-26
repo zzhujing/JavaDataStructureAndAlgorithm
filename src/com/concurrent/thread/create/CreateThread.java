@@ -1,4 +1,4 @@
-package com.concurrent.chapter3;
+package com.concurrent.thread.create;
 
 import java.util.Arrays;
 

@@ -83,3 +83,143 @@ public class ThreadInterruptDemo {
 }
 ```
 
+#### 三种Thread的关闭退出
+
+- 优雅关闭之借用flag
+
+```java
+public class ThreadCloseGracefulWithFlag {
+
+    public static void main(String[] args) {
+        Worker worker = new Worker();
+        worker.start();
+        try {
+            //等待三秒，没执行完就打断
+            Thread.sleep(3_000);
+            worker.shutdown();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+    private static class Worker extends Thread{
+
+        private volatile boolean flag = true;
+
+        @Override
+        public void run() {
+            while (flag) {
+                //do something
+            }
+        }
+        //修改执行flag
+        private void shutdown(){
+            flag = false;
+        }
+    }
+}
+```
+
+  使用修改标记位来中断，是针对`run()`方法中需要循环调用某个事件，`shutdown()`改变标记位，使得这次事件结束后结束线程，这种方法只能作用于需要循环执行且单次执行耗时少的任务。
+  
+- 优雅关闭之`interrupt()`
+
+```java
+public class ThreadCloseGracefulWithInterrupt {
+    public static void main(String[] args) {
+        ThreadCloseGracefulWithInterrupt.Worker worker = new ThreadCloseGracefulWithInterrupt.Worker();
+        worker.start();
+        try {
+            //等待三秒，没执行完就打断
+            Thread.sleep(3_000);
+            worker.interrupt();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+    private static class Worker extends Thread{
+        @Override
+        public void run() {
+            while (true) {
+                //如果被打断就退出线程
+                if (isInterrupted()) {
+                    break;
+                }
+            }
+        }
+    }
+}
+```
+
+  使用`interrupt()`来中断任务线程
+  
+- 直接关闭之使用守护线程
+
+```java
+/**
+ * 针对使用中断的优雅关闭的方式，它的缺点是需要自身能够判断是否已经打断，而面对那种一个线程可能处理耗时任务无法自己判断
+ *
+ * 使用守护线程去执行任务，然后可以控制主线程来控制任务
+ */
+public class ThreadCloseForce {
+    public static void main(String[] args) {
+        ThreadService service = new ThreadService();
+        long start = System.currentTimeMillis();
+        service.execute(() -> {
+            //模拟耗时任务
+            while (true) {
+            }
+        });
+        service.shutdown(3000);
+        long end = System.currentTimeMillis();
+        System.out.println("一共耗时 -> " + (end - start) + "ms");
+    }
+
+    private static class ThreadService {
+
+        //执行任务线程
+        private Thread executeThread;
+
+        //该标志用来显示指明Task任务已经执行完毕了
+        private boolean finished = false;
+
+        void execute(Runnable task) {
+            executeThread = new Thread(() -> {
+                //使用守护线程来执行Task
+                Thread t = new Thread(task);
+                t.setDaemon(true);
+                t.start();
+                try {
+                    //使用join来阻塞executeThread
+                    t.join();
+                    finished = true;
+                } catch (InterruptedException e) {
+                    System.out.println(executeThread.getName() + " = > interrupt");
+                }
+            });
+            executeThread.start();
+        }
+        /**
+         *  关闭方法
+         * @param timeoutMillis  超时时间
+         */
+        void shutdown(long timeoutMillis) {
+            long start = System.currentTimeMillis();
+            while (!finished) {
+                //如果没有成功，那么我们需要判断是否超时
+                if ((System.currentTimeMillis() - start) >= timeoutMillis) {
+                    //超时
+                    System.out.println("任务超时。。。");
+
+                    //打断阻塞的执行线程从而关闭Task
+                    executeThread.interrupt();
+                    return;
+                }
+            }
+            finished = false;
+        }
+    }
+}
+```
+
+  上面第二种的优雅关闭方法如果Runnable任务内部是一次耗时严重无法调用`isInterrupt()`方法，比如网络连接，读取一个大文件等耗时操作。
+  那么如何使用外部方式来关闭正在处理的任务线程呢，前面我们学过守护线程的生命周期是随着主线程结束也随之结束。所以我们可以通过使用一个专门的`executeThread`来创建一个守护线程执行任务，后面在守护线程中使用`join()`阻塞`executeThread`等待执行结束，在`shutdown()`关闭方法中我们可以通过`interrupt()`方法随时中断`exectueThread`的阻塞来结束`executThread`从而提前结束守护线程。同时我们使用一个标志位`finished`来观测执行线程是否执行完毕，从而也可以兼顾执行线程正常结束的逻辑

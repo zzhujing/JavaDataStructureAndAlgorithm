@@ -1,4 +1,4 @@
-package com.concurrent.chapter1;
+package com.concurrent.thread.pattern;
 
 
 /**

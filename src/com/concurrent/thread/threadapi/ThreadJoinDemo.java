@@ -1,4 +1,4 @@
-package com.concurrent.chapter4;
+package com.concurrent.thread.threadapi;
 
 import java.util.stream.IntStream;
 

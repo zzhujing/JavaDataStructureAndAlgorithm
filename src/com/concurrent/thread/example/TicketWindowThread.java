@@ -1,4 +1,4 @@
-package com.concurrent.chapter2;
+package com.concurrent.thread.example;
 
 /**
  * @author : hujing
