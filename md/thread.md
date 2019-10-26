@@ -13,7 +13,7 @@
 
 #### Thread线程的状态以及其中的切换示意图
 
-![thread state](images/thread.png)
+![thread state](../images/thread.png)
 
 #### Thread中用到的策略模式,Thread通过传入不同的runnable对象来完成不同的线程任务调度，其中传入的runnable对象相当于传入不同的策略模式对象
 
