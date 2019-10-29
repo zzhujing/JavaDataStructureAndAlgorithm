@@ -28,7 +28,7 @@ public class CaptureService {
                     worker.add(t);
                 });
 
-        //join等待所有子线程执行完毕
+        //join Main线程等待所有子线程执行完毕
         worker.forEach(t -> {
             try {
                 t.join();
@@ -46,6 +46,7 @@ public class CaptureService {
                 //最多使用五个线程去处理业务
                 while (CONTROLS.size() - 1 > MAX_CONTROL) {
                     try {
+                        //超过5个线程全部wait()，这时候不会占用锁
                         CONTROLS.wait();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
