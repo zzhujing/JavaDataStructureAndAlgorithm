@@ -1,5 +1,7 @@
 package com.concurrent.thread.threadgroup;
 
+import java.util.stream.Stream;
+
 /**
  * @author : hujing
  * @date : 2019/10/29
@@ -23,5 +25,12 @@ public class ThreadGroupApiTest {
         t.start();
         ThreadGroup tg2 = new ThreadGroup(tg1, "tg2");
         System.out.println(tg2.getParent().getName());
+
+//        Thread[] threadList = new Thread[10];
+//        Thread.currentThread().getThreadGroup().enumerate(threadList, true);
+//        Stream.of(threadList).forEach(System.out::println);
+//        System.out.println(tg1.isDestroyed()); //判断是否最后一个线程已经执行完毕了，执行完毕则返回true
+//        tg1.destroy(); //关闭ThreadGroup , 若还有线程存活那么会抛出IllegalThreadStateException
+//        System.out.println(tg1.isDestroyed());
     }
 }
