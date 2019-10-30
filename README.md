@@ -10,7 +10,7 @@
 - [生产者消费者简单实战](src/com/concurrent/thread/communicate/CaptureService.java)
 - [自定义显示lock](src/com/concurrent/thread/lock/BooleanLock.java)
 - [自定义简易线程池](src/com/concurrent/thread/threadpool/SimpleThreadPool.java)
-
+- [五种单例实现方式](src/com/concurrent/design/singleton)
 
 ### 基本数据结构
 - [数组和链表遍历方法的比较](src/com/datastructure/ArrayDemo.java)
