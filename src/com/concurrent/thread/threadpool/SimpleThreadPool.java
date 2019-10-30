@@ -1,19 +1,23 @@
-package com.concurrent.thread.threadpoll;
+package com.concurrent.thread.threadpool;
 
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.IntStream;
 
 /**
  * 自定义简单线程池
+ * 1. 启动即拥有默认数量工作线程
+ * 2. 维护任务队列
+ * 3. 队列满了的性能拒绝策略
+ * 4. 动态增加/缩小工作线程数量
  */
-public class SimpleThreadPool {
+public class SimpleThreadPool extends Thread {
 
-    private static final int DEFAULT_SIZE = 10;
     private static int seq;
-    private final int size;
+    private int size;
     private volatile int taskSize;
     private static final int MAX_TASK_CAPACITY = 2000;
     private static final LinkedList<Runnable> TASK_QUEUE = new LinkedList<>();
@@ -26,12 +30,18 @@ public class SimpleThreadPool {
     };
     private final RejectPolicy rejectPolicy;
 
+    private int min;
+    private int max;
+    private int active;
+
     public SimpleThreadPool() {
-        this(DEFAULT_SIZE, MAX_TASK_CAPACITY, DEFAULT_REJECT_POLICY);
+        this(4, 8, 12, MAX_TASK_CAPACITY, DEFAULT_REJECT_POLICY);
     }
 
-    public SimpleThreadPool(int size, int taskSize, RejectPolicy rejectPolicy) {
-        this.size = size;
+    public SimpleThreadPool(int min, int active, int max, int taskSize, RejectPolicy rejectPolicy) {
+        this.min = min;
+        this.max = max;
+        this.active = active;
         this.taskSize = taskSize;
         this.rejectPolicy = rejectPolicy;
         init();
@@ -39,9 +49,12 @@ public class SimpleThreadPool {
 
     private void init() {
         //初始化对应数量线程去接受任务
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < min; i++) {
             createThread();
         }
+        //默认创建min数量的线程
+        this.size = min;
+        this.start();
     }
 
     private void createThread() {
@@ -57,7 +70,6 @@ public class SimpleThreadPool {
         }
         synchronized (TASK_QUEUE) {
             //这里添加任务的时候需要考虑拒绝策略。
-            System.out.println(TASK_QUEUE.size());
             if (TASK_QUEUE.size() > taskSize)
                 rejectPolicy.reject();
             TASK_QUEUE.addLast(task);
@@ -65,8 +77,8 @@ public class SimpleThreadPool {
         }
     }
 
-    public void shutdown()   {
-        //当任务队列还有任务的时候休眠等待任务结束
+    public void shutdown() {
+        //当任务队列还有任务的时候休眠等待任务结束，也可以写一个shutdownNow方法，那么这里的策略就是直接关闭线程然后将没执行完的Runnable对象返回
         while (!TASK_QUEUE.isEmpty()) {
             try {
                 Thread.sleep(50);
@@ -75,19 +87,74 @@ public class SimpleThreadPool {
             }
         }
 
-        //获取当前线程数
-        int curThreadCount = THREAD_QUEUE.size();
-        while (curThreadCount > 0) {
-            for (Worker t : THREAD_QUEUE) {
-                //如果当前线程处于BLOCKED状态说明正在wait()
-                if (t.state == TaskState.BLOCKED) {
-                    //打断wait()让线程完成
-                    t.interrupt();
-                    //修改线程状态值
-                    t.close();
-                    curThreadCount--;
-                    this.destroy = true;
+        synchronized (THREAD_QUEUE) {
+            //获取当前线程数
+            int curThreadCount = THREAD_QUEUE.size();
+            while (curThreadCount > 0) {
+                for (Worker t : THREAD_QUEUE) {
+                    //如果当前线程处于BLOCKED状态说明正在wait()
+                    if (t.state == TaskState.BLOCKED) {
+                        //打断wait()让线程完成
+                        t.interrupt();
+                        //修改线程状态值
+                        t.close();
+                        curThreadCount--;
+                        this.destroy = true;
+                    }
                 }
+            }
+        }
+    }
+
+    //当前线程池也继承了Thread类，并且在run()中有动态改变工作线程数的逻辑
+    @Override
+    public void run() {
+        while (!destroy) {
+
+            System.out.printf("min:%d,active:%d,max:%d,size:%d,TaskQueue：%d", min, active, max, size, TASK_QUEUE.size());
+
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            if (TASK_QUEUE.size() > min && size < active) {
+                for (int i = min; i < active; i++) {
+                    createThread();
+                }
+                System.out.println("Thread size increment to active.");
+                this.size = active;
+            } else if (TASK_QUEUE.size() > active && size < max) {
+                for (int i = active; i < max; i++) {
+                    createThread();
+                }
+                System.out.println("Thread size increment to max.");
+                this.size = max;
+            }
+
+            //当暂时没有任务的时候，并且大于active线程数量的时候release掉部分线程
+            if (TASK_QUEUE.isEmpty() && this.size > active) {
+                synchronized (THREAD_QUEUE) {
+                    //移除指定数量的线程
+                    Iterator<Worker> iterator = THREAD_QUEUE.iterator();
+                    while (iterator.hasNext() && this.size != active) {
+                        Worker worker = iterator.next();
+                        if (worker.state == TaskState.BLOCKED) {
+                            worker.interrupt();
+                            worker.close();
+                            iterator.remove();
+                            size--;
+                        } else {
+                            try {
+                                Thread.sleep(10);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                }
+                System.out.println("Thread size decrement to active..");
             }
         }
     }
@@ -115,9 +182,10 @@ public class SimpleThreadPool {
 
     //拒绝策略
     public interface RejectPolicy {
-        void reject() throws com.concurrent.thread.threadpoll.RejectException;
+        void reject() throws RejectException;
     }
 
+    //线程状态枚举
     private enum TaskState {
         FREE, RUNNING, BLOCKED, DEAD
     }
@@ -146,6 +214,7 @@ public class SimpleThreadPool {
                             this.state = TaskState.BLOCKED;
                             TASK_QUEUE.wait();
                         } catch (InterruptedException e) {
+                            System.out.println("Closed..");
                             break OUTER;
                         }
                     }
@@ -172,22 +241,14 @@ public class SimpleThreadPool {
                     threadPool.submit(() -> {
                         System.out.println("the no -> " + i + " task begin. ——> " + Thread.currentThread());
                         try {
-                            Thread.sleep(1000);
+                            Thread.sleep(2000);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
                         System.out.println("the no -> " + i + "  task finished.——> " + Thread.currentThread());
                     });
                 });
-        Thread.sleep(10_000);
+        Thread.sleep(20_000);
         threadPool.shutdown();
     }
 }
-
-
-class RejectException extends RuntimeException {
-    public RejectException(String message) {
-        super(message);
-    }
-}
-

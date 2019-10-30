@@ -7,7 +7,7 @@ public class LinkedListDemo {
         linkedList.add("1");
         linkedList.add("2");
         linkedList.add("3");
-        System.out.println(linkedList.deleteLastNonNode(0));
+        System.out.println(linkedList.deleteLastNonNode(1));
     }
 
 
@@ -107,7 +107,7 @@ public class LinkedListDemo {
             }
             if (cur.next == null && n != 0) throw new IllegalArgumentException("没有那么多元素");
             pre.next = pre.next.next;
-            return flip.next;
+            return flip(flip.next);
         }
 
 

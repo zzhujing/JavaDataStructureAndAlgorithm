@@ -24,6 +24,7 @@ public class QueueArrayDemo {
                 //队列满了
                 return false;
             }
+            //若队列tail移动到尾端且容量未满则进行数组搬运，后面通过循环队列改进
             for (int i = head; i < tail; i++) {
                 data[i - head] = data[i];
             }
