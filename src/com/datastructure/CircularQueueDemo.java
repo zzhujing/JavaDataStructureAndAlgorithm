@@ -1,8 +1,8 @@
 package com.datastructure;
 
-public class CirularQueueDemo {
+public class CircularQueueDemo {
     public static void main(String[] args) {
-        CirularQueueDemo demo = new CirularQueueDemo(3);
+        CircularQueueDemo demo = new CircularQueueDemo(3);
         demo.enqueue(1);
         demo.enqueue(2);
         System.out.println("dequeue :" + demo.dequeue());
@@ -19,7 +19,7 @@ public class CirularQueueDemo {
     private int head;
     private int tail;
 
-    public CirularQueueDemo(int capacity) {
+    public CircularQueueDemo(int capacity) {
         this.data = new Object[capacity];
         this.capacity = capacity;
         this.head = 0;
