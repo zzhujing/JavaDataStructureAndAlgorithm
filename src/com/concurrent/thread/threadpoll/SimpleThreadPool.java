@@ -8,13 +8,18 @@ import java.util.stream.IntStream;
 
 /**
  * 自定义简单线程池
+ * 线程池的特点
+ * 1. 初始化的时候会初始化特定数量线程
+ * 2. 接受任务放置到任务队列
+ * 3. 当任务超过一定数量值的时候有拒绝策略
+ * 4. 动态队列
  */
 public class SimpleThreadPool {
 
     private static final int DEFAULT_SIZE = 10;
     private static int seq;
     private final int size;
-    private volatile int taskSize;
+    private final int taskSize;
     private static final int MAX_TASK_CAPACITY = 2000;
     private static final LinkedList<Runnable> TASK_QUEUE = new LinkedList<>();
     private static final List<Worker> THREAD_QUEUE = new ArrayList<>();
@@ -53,7 +58,7 @@ public class SimpleThreadPool {
     public void submit(Runnable task) {
 
         if (destroy) {
-            throw new IllegalStateException("The Thread Pool Already destroy");
+            throw new IllegalStateException("The Thread Pool Already Destroy");
         }
         synchronized (TASK_QUEUE) {
             //这里添加任务的时候需要考虑拒绝策略。
@@ -65,7 +70,7 @@ public class SimpleThreadPool {
         }
     }
 
-    public void shutdown()   {
+    public void shutdown() {
         //当任务队列还有任务的时候休眠等待任务结束
         while (!TASK_QUEUE.isEmpty()) {
             try {
@@ -87,6 +92,12 @@ public class SimpleThreadPool {
                     t.close();
                     curThreadCount--;
                     this.destroy = true;
+                } else {
+                    try {
+                        Thread.sleep(10);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
@@ -115,7 +126,7 @@ public class SimpleThreadPool {
 
     //拒绝策略
     public interface RejectPolicy {
-        void reject() throws com.concurrent.thread.threadpoll.RejectException;
+        void reject() throws RejectException;
     }
 
     private enum TaskState {
@@ -141,14 +152,16 @@ public class SimpleThreadPool {
                 //操作任务队列需要加锁
                 Runnable runnable;
                 synchronized (TASK_QUEUE) {
-                    while (TASK_QUEUE.isEmpty()) {
+                    if (TASK_QUEUE.isEmpty()) {
                         try {
                             this.state = TaskState.BLOCKED;
                             TASK_QUEUE.wait();
                         } catch (InterruptedException e) {
+                            //这里的目的是要退出到状态判断label
                             break OUTER;
                         }
                     }
+                    //从队列中获取一个任务
                     runnable = TASK_QUEUE.removeFirst();
                     System.out.println("remove -> " + TASK_QUEUE.size());
                 }
@@ -166,7 +179,7 @@ public class SimpleThreadPool {
     }
 
     public static void main(String[] args) throws InterruptedException {
-        SimpleThreadPool threadPool = new SimpleThreadPool();
+        SimpleThreadPool threadPool = new SimpleThreadPool(7, 10, DEFAULT_REJECT_POLICY);
         IntStream.rangeClosed(0, 40)
                 .forEach(i -> {
                     threadPool.submit(() -> {
@@ -181,13 +194,6 @@ public class SimpleThreadPool {
                 });
         Thread.sleep(10_000);
         threadPool.shutdown();
-    }
-}
-
-
-class RejectException extends RuntimeException {
-    public RejectException(String message) {
-        super(message);
     }
 }
 
