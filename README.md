@@ -11,6 +11,7 @@
 - [自定义显示lock](src/com/concurrent/thread/lock/BooleanLock.java)
 - [自定义简易线程池](src/com/concurrent/thread/threadpool/SimpleThreadPool.java)
 - [五种单例实现方式](src/com/concurrent/design/singleton)
+- [volatile和Java内存模型](md/JavaMemoryModel.md)
 
 ### 基本数据结构
 - [数组和链表遍历方法的比较](src/com/datastructure/ArrayDemo.java)
@@ -21,7 +22,7 @@
 - [循环链表实现](src/com/datastructure/CircularQueueDemo.java)
 - [简单递归实现](src/com/datastructure/RecursionDemo.java)
 
-### 基本算法相关文章链接
+### 基本算法相关源码链接
 
 - [基本排序算法Java实现](md/sort.md)
 - [使用快排思想在O(n)时间复杂度内获取无序列表的第K大元素](src/com/algorithm/QuickSortFindNoK.java)
