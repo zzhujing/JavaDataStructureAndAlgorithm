@@ -9,29 +9,17 @@ import java.util.stream.IntStream;
 
 /**
  * 自定义简单线程池
-<<<<<<< HEAD:src/com/concurrent/thread/threadpoll/SimpleThreadPool.java
  * 线程池的特点
- * 1. 初始化的时候会初始化特定数量线程
- * 2. 接受任务放置到任务队列
- * 3. 当任务超过一定数量值的时候有拒绝策略
- * 4. 动态队列
-=======
  * 1. 启动即拥有默认数量工作线程
  * 2. 维护任务队列
  * 3. 队列满了的性能拒绝策略
  * 4. 动态增加/缩小工作线程数量
->>>>>>> c85fab7ef785995c692f317fe84b6b2a17bca596:src/com/concurrent/thread/threadpool/SimpleThreadPool.java
  */
 public class SimpleThreadPool extends Thread {
 
     private static int seq;
-<<<<<<< HEAD:src/com/concurrent/thread/threadpoll/SimpleThreadPool.java
-    private final int size;
-    private final int taskSize;
-=======
     private int size;
     private volatile int taskSize;
->>>>>>> c85fab7ef785995c692f317fe84b6b2a17bca596:src/com/concurrent/thread/threadpool/SimpleThreadPool.java
     private static final int MAX_TASK_CAPACITY = 2000;
     private static final LinkedList<Runnable> TASK_QUEUE = new LinkedList<>();
     private static final List<Worker> THREAD_QUEUE = new ArrayList<>();
@@ -91,11 +79,7 @@ public class SimpleThreadPool extends Thread {
     }
 
     public void shutdown() {
-<<<<<<< HEAD:src/com/concurrent/thread/threadpoll/SimpleThreadPool.java
-        //当任务队列还有任务的时候休眠等待任务结束
-=======
         //当任务队列还有任务的时候休眠等待任务结束，也可以写一个shutdownNow方法，那么这里的策略就是直接关闭线程然后将没执行完的Runnable对象返回
->>>>>>> c85fab7ef785995c692f317fe84b6b2a17bca596:src/com/concurrent/thread/threadpool/SimpleThreadPool.java
         while (!TASK_QUEUE.isEmpty()) {
             try {
                 Thread.sleep(50);
@@ -104,25 +88,7 @@ public class SimpleThreadPool extends Thread {
             }
         }
 
-<<<<<<< HEAD:src/com/concurrent/thread/threadpoll/SimpleThreadPool.java
-        //获取当前线程数
-        int curThreadCount = THREAD_QUEUE.size();
-        while (curThreadCount > 0) {
-            for (Worker t : THREAD_QUEUE) {
-                //如果当前线程处于BLOCKED状态说明正在wait()
-                if (t.state == TaskState.BLOCKED) {
-                    //打断wait()让线程完成
-                    t.interrupt();
-                    //修改线程状态值
-                    t.close();
-                    curThreadCount--;
-                    this.destroy = true;
-                } else {
-                    try {
-                        Thread.sleep(10);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-=======
+
         synchronized (THREAD_QUEUE) {
             //获取当前线程数
             int curThreadCount = THREAD_QUEUE.size();
@@ -136,7 +102,6 @@ public class SimpleThreadPool extends Thread {
                         t.close();
                         curThreadCount--;
                         this.destroy = true;
->>>>>>> c85fab7ef785995c692f317fe84b6b2a17bca596:src/com/concurrent/thread/threadpool/SimpleThreadPool.java
                     }
                 }
             }
@@ -246,16 +211,13 @@ public class SimpleThreadPool extends Thread {
                 //操作任务队列需要加锁
                 Runnable runnable;
                 synchronized (TASK_QUEUE) {
-                    if (TASK_QUEUE.isEmpty()) {
+                    //这里使用while的原因在与，wait()被唤醒的时候会从当时wait()的地方继续往下执行，而不会从拿到锁的位置开始，为了确保状态，所以需要使用while进行再次判断.
+                    while (TASK_QUEUE.isEmpty()) {
                         try {
                             this.state = TaskState.BLOCKED;
                             TASK_QUEUE.wait();
                         } catch (InterruptedException e) {
-<<<<<<< HEAD:src/com/concurrent/thread/threadpoll/SimpleThreadPool.java
                             //这里的目的是要退出到状态判断label
-=======
-                            System.out.println("Closed..");
->>>>>>> c85fab7ef785995c692f317fe84b6b2a17bca596:src/com/concurrent/thread/threadpool/SimpleThreadPool.java
                             break OUTER;
                         }
                     }
@@ -277,7 +239,7 @@ public class SimpleThreadPool extends Thread {
     }
 
     public static void main(String[] args) throws InterruptedException {
-        SimpleThreadPool threadPool = new SimpleThreadPool(7, 10, DEFAULT_REJECT_POLICY);
+        SimpleThreadPool threadPool = new SimpleThreadPool();
         IntStream.rangeClosed(0, 40)
                 .forEach(i -> {
                     threadPool.submit(() -> {
@@ -294,7 +256,3 @@ public class SimpleThreadPool extends Thread {
         threadPool.shutdown();
     }
 }
-<<<<<<< HEAD:src/com/concurrent/thread/threadpoll/SimpleThreadPool.java
-
-=======
->>>>>>> c85fab7ef785995c692f317fe84b6b2a17bca596:src/com/concurrent/thread/threadpool/SimpleThreadPool.java
