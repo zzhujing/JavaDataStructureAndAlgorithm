@@ -12,7 +12,7 @@
 - [自定义简易线程池](src/com/concurrent/thread/threadpool/SimpleThreadPool.java)
 - [五种单例实现方式](src/com/concurrent/design/singleton)
 - [volatile和Java内存模型](md/JavaMemoryModel.md)
-
+- [Java多线程设计模式](md/JavaMultipartThreadDesignPattern.md)
 ### 基本数据结构
 - [数组和链表遍历方法的比较](src/com/datastructure/ArrayDemo.java)
 - [单链表简单实现以及相关面试问题源码](src/com/datastructure/LinkedListDemo.java)
