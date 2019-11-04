@@ -33,3 +33,9 @@ Map<Thread.currentThread(),T>`
 > 每一个消息使用对应不同线程处理
 
 [演示Demo](../src/com/concurrent/design/threadpremessage/ThreadPreMessageClient.java)
+
+### Worker Thread模式
+
+> 类似于生产者消费者
+
+[演示Demo](../src/com/concurrent/design/work/WorkerPatternClient.java)

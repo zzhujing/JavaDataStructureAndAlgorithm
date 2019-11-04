@@ -9,3 +9,5 @@
 - [生产者消费者模式](SimplePattern.md)
 - [CountDown模式](SimplePattern.md)
 - [ThreadPreMessage](SimplePattern.md)
+- [Worker模式](SimplePattern.md)
+- [ActiveObject模式](ActiveObject.md)
