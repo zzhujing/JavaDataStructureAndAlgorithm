@@ -9,7 +9,7 @@ import java.util.Collections;
  */
 public class BooleanLock implements Lock {
 
-    private boolean isLocked;
+    private volatile boolean isLocked;
 
     public BooleanLock() {
         this.isLocked = false;

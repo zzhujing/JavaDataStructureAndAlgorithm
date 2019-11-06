@@ -35,11 +35,6 @@ public class WaitSetDemo {
                 .forEach(i -> {
                     synchronized (LOCK) {
                         LOCK.notify();
-                        try {
-                            Thread.sleep(1000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
                     }
                 });
     }

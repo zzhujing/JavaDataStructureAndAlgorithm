@@ -1,7 +1,5 @@
 package com.concurrent.thread.lock;
 
-import java.io.IOException;
-
 /**
  * @author : hujing
  * @date : 2019/10/29
@@ -9,6 +7,7 @@ import java.io.IOException;
  */
 public class ShutDownHookTest {
     public static void main(String[] args) throws InterruptedException {
+        // kill -9 是不会执行ShutDownHook的
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             System.out.println("shutdown Hook invoked!");
             notifyAndRelease();

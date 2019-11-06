@@ -41,7 +41,7 @@ public class ThreadCommunicateManyToMany {
                 }
             }
 
-            System.out.println("P -> " + (++i));
+            System.out.println(Thread.currentThread().getName() + " " + (++i));
             LOCK.notifyAll();
             isProduce = true;
         }
@@ -56,7 +56,7 @@ public class ThreadCommunicateManyToMany {
                     e.printStackTrace();
                 }
             }
-            System.out.println("C ->" + i);
+            System.out.println(Thread.currentThread().getName() + " " + i);
             //消费完毕通知生产
             LOCK.notifyAll();
             isProduce = false;

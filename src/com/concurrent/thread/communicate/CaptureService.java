@@ -44,7 +44,7 @@ public class CaptureService {
             synchronized (CONTROLS) {
 
                 //最多使用五个线程去处理业务
-                while (CONTROLS.size() - 1 > MAX_CONTROL) {
+                while (CONTROLS.size() > MAX_CONTROL) {
                     try {
                         //超过5个线程全部wait()，这时候不会占用锁
                         CONTROLS.wait();

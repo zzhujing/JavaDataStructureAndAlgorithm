@@ -23,8 +23,9 @@ public class DifferenceOfWaitAndSleep {
         });
     }
 
-    public static void m1() {
+    public synchronized static void m1() {
         try {
+            System.out.println("m1 invoked!");
             Thread.sleep(2000L);
         } catch (InterruptedException e) {
             e.printStackTrace();

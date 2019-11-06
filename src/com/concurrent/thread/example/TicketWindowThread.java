@@ -20,7 +20,7 @@ public class TicketWindowThread extends Thread {
 
     @Override
     public void run() {
-
+        //会有多线程并发问题
         while (curNo <= MAX_NO) {
             System.out.println(name + ": " + (curNo++) + "号来办理业务！！");
         }

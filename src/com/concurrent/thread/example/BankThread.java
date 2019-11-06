@@ -10,5 +10,7 @@ public class BankThread {
         new TicketWindowThread("NO:1柜台").start();
         new TicketWindowThread("NO:2柜台").start();
         new TicketWindowThread("NO:3柜台").start();
+        new TicketWindowThread("NO:4柜台").start();
+        new TicketWindowThread("NO:5柜台").start();
     }
 }
