@@ -36,6 +36,6 @@ Map<Thread.currentThread(),T>`
 
 ### Worker Thread模式
 
-> 类似于生产者消费者
+> 类似于生产者消费者,只是将`WorkerThread`通过`Channel`也就是任务队列给隐藏了.只需要关注生产者即可
 
 [演示Demo](../src/com/concurrent/design/work/WorkerPatternClient.java)

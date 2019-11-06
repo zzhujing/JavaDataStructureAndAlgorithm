@@ -10,6 +10,6 @@ public class BinaryObserver extends Observer {
     }
     @Override
     protected void update() {
-        System.out.println("BinaryObserver -> " + Integer.toBinaryString(subject.getState()));
+            System.out.println("BinaryObserver -> " + Integer.toBinaryString(subject.getState()));
     }
 }
