@@ -1,7 +1,5 @@
 package com.concurrent.classloader;
 
-import sun.tools.java.ClassNotFound;
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -11,7 +9,7 @@ public class CustomClassLoader extends ClassLoader {
 
     private String classLoaderName;
 
-    private static final String DEFAULT_LOAD_DIR = "/Users/hujing";
+    private static final String DEFAULT_LOAD_DIR = "/home/hujing";
 
     private  String dir;
 

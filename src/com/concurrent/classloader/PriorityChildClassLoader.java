@@ -9,7 +9,7 @@ public class PriorityChildClassLoader extends ClassLoader {
 
     private String classLoaderName;
 
-    private static final String DEFAULT_LOAD_DIR = "/Users/hujing";
+    private static final String DEFAULT_LOAD_DIR = "/home/hujing";
 
     private final String dir;
 
