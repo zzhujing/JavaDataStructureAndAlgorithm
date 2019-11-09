@@ -2,7 +2,7 @@
 
 ### O(n^2)
  
-[排序源码](../src/com/algorithm/SortDemo.java)
+[排序源码](../src/main/java/com/algorithm/SortDemo.java)
 
 - 冒泡排序
 

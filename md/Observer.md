@@ -19,4 +19,4 @@
 - 当发生对应的事件的时候事件源会直接通知观察者对象
 - 可以使用`Event`来传递信息
 
-[Demo源码实例](../src/com/concurrent/design/observer)
+[Demo源码实例](../src/main/java/com/concurrent/design/observer)

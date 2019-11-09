@@ -63,4 +63,4 @@ public class FutureService<T> {
     }
 }
 ```
-[演示Demo](../src/com/concurrent/design/future)
+[演示Demo](../src/main/java/com/concurrent/design/future)
