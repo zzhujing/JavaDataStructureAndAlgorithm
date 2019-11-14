@@ -75,6 +75,6 @@ public class ReadWriteLock {
 
 }
 ```
-[演示Demo](../src/com/concurrent/design/readwriter/ReadWriteClient.java)
+[演示Demo](../src/main/java/com/concurrent/design/readwriter/ReadWriteClient.java)
 
 
