@@ -216,6 +216,28 @@ public class AtomicXXFieldUpdaterTest {
  相比于普通的`AtomicXxx`来说具备：
 - 对于`AtomicXX`类型来说更加节省内存，尤其是面对那种链表数据结构的
 - 能让其他类的volatile字段属性具有原子性。
+
+
+ 简单比较各种并发手段的执行效率
+![执行效率简单比较](../src/main/java/com/concurrent/juc/unsafe/UnsafeTest.java)
+
+#### Unsafe类的一些简单使用
+
+- 避开类的初始化直接调用`allocateInstance()`分配对象内存
+```
+final Unsafe unsafe = UnsafeTest.getUnsafe();
+final Simple s = (Simple) unsafe.allocateInstance(Simple.class);
+```
+- 动态改变属性值`putXxx()`,`putInt()`,`putObject`..
+```
+Field f = Simple.class.getDeclaredField("i");
+unsafe.putInt(work, unsafe.objectFieldOffset(f), 43);
+work.work();
+```
+- 也可以直接使用`defineClass()`加载类
+ 
+ 
+ 
  
 
     
