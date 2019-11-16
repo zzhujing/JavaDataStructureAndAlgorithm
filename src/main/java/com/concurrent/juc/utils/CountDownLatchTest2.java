@@ -12,7 +12,6 @@ import java.util.concurrent.CountDownLatch;
 public class CountDownLatchTest2 {
     public static void main(String[] args) throws InterruptedException {
         final CountDownLatch latch = new CountDownLatch(1);
-
         final Thread t1 = new Thread(() -> {
             try {
                 latch.await();

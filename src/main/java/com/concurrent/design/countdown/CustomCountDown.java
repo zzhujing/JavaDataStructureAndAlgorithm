@@ -1,5 +1,7 @@
 package com.concurrent.design.countdown;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 /**
  * @author : hujing
  * @date : 2019/11/4
@@ -7,28 +9,22 @@ package com.concurrent.design.countdown;
 public class CustomCountDown {
 
     private final int total;
-    private int doneSize;
+    private AtomicInteger doneSize;
+    private final long timeoutMillis;
 
-    public CustomCountDown(int size) {
+    public CustomCountDown(int size, long timeout) {
         this.total = size;
-        this.doneSize = 0;
+        this.timeoutMillis = System.currentTimeMillis() + timeout;
+        this.doneSize = new AtomicInteger(0);
     }
 
     public void down() {
-        synchronized (this) {
-            if (doneSize == total) {
-                throw new IllegalArgumentException("Successful Size More than total");
-            }
-            doneSize++;
-            this.notifyAll();
-        }
+        doneSize.incrementAndGet();
     }
 
     public void await() throws InterruptedException {
-        synchronized (this) {
-            while (doneSize != total) {
-                this.wait();
-            }
+        while (!doneSize.compareAndSet(total, 0)) {
+            if (System.currentTimeMillis() >= timeoutMillis) throw new RuntimeException("timeout");
         }
     }
 }

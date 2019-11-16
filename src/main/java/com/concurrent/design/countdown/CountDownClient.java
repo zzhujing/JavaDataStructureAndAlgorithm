@@ -9,13 +9,13 @@ import java.util.stream.IntStream;
 public class CountDownClient {
     public static void main(String[] args) throws InterruptedException {
 
-        final CustomCountDown countDown = new CustomCountDown(5);
+        final CustomCountDown countDown = new CustomCountDown(5, 5000);
 
         IntStream.rangeClosed(1, 5)
                 .forEach(i -> new Thread(() -> {
                     System.out.println(Thread.currentThread().getName() + " is working ..");
                     try {
-                        Thread.sleep(1000);
+                        Thread.sleep(6000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }

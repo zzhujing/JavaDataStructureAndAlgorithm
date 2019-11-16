@@ -14,6 +14,7 @@
 - [volatile和Java内存模型](md/JavaMemoryModel.md)
 - [Java多线程设计模式](md/JavaMultipartThreadDesignPattern.md)
 - [JUC-原子类型](md/Atomic.md)
+- [并发包中常用的工具集](md/ConcurrcyUtils.md)
 ### 基本数据结构
 - [数组和链表遍历方法的比较](src/main/java/com/datastructure/ArrayDemo.java)
 - [单链表简单实现以及相关面试问题源码](src/main/java/com/datastructure/LinkedListDemo.java)
