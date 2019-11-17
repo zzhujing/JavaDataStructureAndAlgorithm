@@ -7,7 +7,8 @@
 - [Lock](#Lock)
 - [Condition](#Condition)
 - [StampedLock](#StampedLock)
-- [ForkJoin](#ForkJoin)
+- [ForkJoin](ForkJoin)
+- [Phaser](#Phaser)
 
 #### `CountDownLatch`
 
@@ -855,9 +856,131 @@ public class ForkJoinRecursiveActionTest {
 }
 ```
 
+ForkJoin - 实现快速排序
 
+```java
+/**
+ * 使用ForkJoin完成 快速排序
+ */
+public class ForkJoinQuickSortTest {
+    public static final Random random = new Random(System.currentTimeMillis());
 
+    public static void main(String[] args) {
+        int[] data = new int[1_000_000_0];
 
+        for (int i = 0; i < 1_000_000_0; i++) {
+            data[i] = random.nextInt(1000);
+        }
+			  testForkJoin(data); //5441ms
+       // long startTime = System.currentTimeMillis();
+        //testSingleThread(data); //41743ms
+        //System.out.println((System.currentTimeMillis() - startTime) + "ms");
+    }
+
+    private static void testSingleThread(int[] data) {
+        SortDemo.quickSort(data, data.length);
+    }
+
+    private static void testForkJoin(int[] data) {
+        final ForkJoinPool forkJoinPool = new ForkJoinPool();
+        final QuickSortRecursiveAction task = new QuickSortRecursiveAction(data);
+        long startTime = System.currentTimeMillis();
+        forkJoinPool.execute(task);
+        try {
+            forkJoinPool.shutdown();
+            forkJoinPool.awaitTermination(1, TimeUnit.HOURS);
+            System.out.println((System.currentTimeMillis() - startTime) + "ms");
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+    private static class QuickSortRecursiveAction extends RecursiveAction {
+
+        private int[] data;
+        private final int begin;
+        private final int end;
+        private static final int MAX_THRESHOLD = 30;
+
+        private QuickSortRecursiveAction(int[] data) {
+            this.data = data;
+            this.begin = 0;
+            this.end = data.length - 1;
+        }
+
+        private QuickSortRecursiveAction(int[] data, int begin, int end) {
+            this.data = data;
+            this.begin = begin;
+            this.end = end;
+        }
+
+        @Override
+        protected void compute() {
+          	//元素低于30的时候直接进行排序
+            if (end - begin <= MAX_THRESHOLD) {
+                Arrays.sort(data, begin, end + 1);
+            } else {
+              //fork child task
+                int pivot = pivotFunc(data, begin, end);
+                //calculate the pivot index
+                QuickSortRecursiveAction left = new QuickSortRecursiveAction(data, begin, pivot - 1);
+                QuickSortRecursiveAction right = new QuickSortRecursiveAction(data, pivot + 1, end);
+                left.fork();
+                right.fork();
+            }
+        }
+		
+      
+      	//get pivot index 
+        private int pivotFunc(int[] data, int begin, int end) {
+            int pivot = data[end];
+            int minFlagIndex = begin;
+            for (int i = begin; i < end; i++) {
+              //如果小于临时pivot则交换小于的索引前一位和当前i
+                if (data[i] < pivot) {
+                    //交换begin和i
+                    swap(data, minFlagIndex++, i);
+                }
+            }
+            swap(data, minFlagIndex, end);
+            return minFlagIndex;
+        }
+
+        private void swap(int[] source, int i, int j) {
+            int tmp = source[i];
+            source[i] = source[j];
+            source[j] = tmp;
+        }
+    }
+}
+```
+
+#### `Phaser`
+
+> 综合了`CountDownLatch`和`CyclicBarrier`，并且提供了更加灵活的API
+
+API Table : 
+
+| API方法名               | 作用                                                         |
+| ----------------------- | ------------------------------------------------------------ |
+| arriveAndAwaitAdvance() | 表示自己已经完成并且等待其他线程执行完毕                     |
+| arrive()                | 表示已经完成然后不阻塞继续做其他任务                         |
+| register(int num)       | 动态注册新的parties                                          |
+| getPhase()              | 因为Phaser当所有的parties执行完毕的时候会重置parties，该方法会读取到时第几次重置 |
+| getArrivedParties（）   | 获取当前已经标记成功的parties数                              |
+| getUnarrivedParties     | 获取当前没有标记成功的parties数                              |
+| arriveAndDeregister()   | 标记到达并且取消当前注册的parties（在某异常的线程中不能完成任务则要取消注册） |
+| onAdvance()             | 控制是否能重置parties，true不能，false能                     |
+| awaitAdvance(int phase) | 阻塞等待所有parties结束该阶段，且该方法和arriveAndAwaitAdvance不一样的地方在于该方法不会占用parties |
+
+ 
+
+使用场景：
+
+- 可以使用`arriveAndAwaitAdvance()`来代替`CyclicBarrier#await()` , 来在多个线程中并行处理某阶段事情。和后者不同的是可自动重复使用其中的`parties`，后者需要`reset()`
+- 可在不能完成的任务中使用`arriveAndDeregister`取消注册parties从而让主线程不阻塞。
+- 可以在主线程中调用`arriveAndAwaitAdvance()`等待其他所有的`arrive()`之后不阻塞继续执行的线程完成。
+- 可以不占用`parties`使用`awaitAdvance()`监控阻塞是否完成
+- 默认的`arriveAndAwaitAdvance`无法中断,可以通过外界的`forceTerminal()`直接关闭，或者通过`awaitAdvanceInterruptibly` 让其可以被中断。
 
 
 
