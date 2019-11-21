@@ -1,4 +1,4 @@
-package com.concurrent.thread.threadpool;
+package com.concurrent.juc.threadpool;
 
 import java.util.concurrent.*;
 
@@ -9,7 +9,7 @@ import java.util.concurrent.*;
  * <p>
  * 1. 对于线程池的{@link ExecutorService#execute(Runnable)}方法来说，是需要再创建线程池的时候传递自己的线程工厂类并设置好线程异常捕获执行器
  * 2. 对于{@link ExecutorService#submit(Runnable)}方法,则可以使用{@link Future#get()} 来捕获异常 -> 喜欢这种
- * 3. 直接在子线程中进行try..catch..
+ * 3. 直接在Runnable中进行try..catch...
  */
 public class ThreadExceptionCaughtDemo {
     private static final ExecutorService service = Executors.newFixedThreadPool(
@@ -50,7 +50,7 @@ public class ThreadExceptionCaughtDemo {
         @Override
         public void uncaughtException(Thread t, Throwable e) {
             System.out.println(t.getName() + " , " + e.getMessage());
-            //可以在这里进行全局事务回滚
+            //可以在这里进行全局事务回滚,但是这样无法获取到Task的一些特定属性，则需要在Task任务中进行try...catch...
         }
     }
 }

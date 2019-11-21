@@ -101,9 +101,9 @@ public class SimpleThreadPool extends Thread {
                         //修改线程状态值
                         t.close();
                         curThreadCount--;
-                        this.destroy = true;
                     }
                 }
+                this.destroy = true;
             }
         }
     }
