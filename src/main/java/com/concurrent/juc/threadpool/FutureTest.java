@@ -11,12 +11,12 @@ import java.util.concurrent.*;
  * 5. cancel之后是无法通过get()获取到结果的。
  */
 public class FutureTest {
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws InterruptedException, ExecutionException {
         testGetTimeout();
 //        testRunningIfCancel();
     }
 
-    private static void testGetTimeout() {
+    private static void testGetTimeout() throws ExecutionException, InterruptedException {
         final ThreadPoolExecutor executorService = (ThreadPoolExecutor) Executors.newFixedThreadPool(2);
         final Future<String> future = executorService.submit(() -> {
             try {
@@ -36,8 +36,9 @@ public class FutureTest {
             e.printStackTrace();
             //取消任务并且关闭线程池。
             System.out.println(future.cancel(true));
-            System.out.println(executorService.getActiveCount());
-            executorService.shutdown();
+            System.out.println(future.get());
+//            System.out.println(executorService.getActiveCount());
+//            executorService.shutdown();
         }
     }
 

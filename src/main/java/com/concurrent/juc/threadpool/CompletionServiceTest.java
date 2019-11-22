@@ -31,8 +31,7 @@ public class CompletionServiceTest {
         );
         final ExecutorService executorService = Executors.newFixedThreadPool(2);
         final ExecutorCompletionService<Event> executorCompletionService = new ExecutorCompletionService<>(executorService);
-        List<Future<Event>> futureList = new ArrayList<>();
-        callableList.forEach(c -> futureList.add(executorCompletionService.submit(c)));
+        callableList.forEach(executorCompletionService::submit);
 
         Future<Event> take = null;
         while ((take = executorCompletionService.take()) != null) {

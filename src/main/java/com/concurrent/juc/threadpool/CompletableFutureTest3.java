@@ -68,10 +68,10 @@ public class CompletableFutureTest3 {
             }
         }).exceptionally(Throwable::getMessage);
 //        future.completeExceptionally(new RuntimeException("error"));
-//        future.obtrudeValue("result");
+        future.obtrudeValue("result");
         System.out.println(future.get());
-//        future.obtrudeException(new RuntimeException("error"));
-//        System.out.println(future.get());
+        future.obtrudeException(new RuntimeException("error"));
+        System.out.println(future.get());
     }
 
     private static void testComplete() throws ExecutionException, InterruptedException {
@@ -102,7 +102,7 @@ public class CompletableFutureTest3 {
                 throw new RuntimeException(e);
             }
         });
-        System.out.println(future.get());
+        System.out.println(future.join());
     }
 
     private static void testGetNow() {
