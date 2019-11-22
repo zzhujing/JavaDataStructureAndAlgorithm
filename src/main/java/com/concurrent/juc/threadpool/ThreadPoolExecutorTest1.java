@@ -26,7 +26,6 @@ public class ThreadPoolExecutorTest1 {
                 new MyThreadFactory(),
                 new ThreadPoolExecutor.AbortPolicy() //拒绝策略
         );
-
         threadPoolExecutor.submit(() -> sleep(100));
         threadPoolExecutor.submit(() -> sleep(10));
         threadPoolExecutor.submit(() -> sleep(10));

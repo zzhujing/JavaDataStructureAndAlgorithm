@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /**
- * CompletableFuture Test 1.
+ * CompletableFuture Test 1 -> 演示和正常一般的线程池的不同
  * 1. 里面的线程池(ForkJoinPool)全都是守护线程
  * 2. 是ExecutorService和Future的结合体
  * 3. 可以完全异步并行的执行多种任务并最后自动完成回调
@@ -22,8 +22,8 @@ public class CompletableFutureTest1 {
         IntStream.range(0, 10).boxed()
                 .forEach(i -> CompletableFuture
                         .supplyAsync(CompletableFutureTest1::get)
-                        .thenAcceptAsync(CompletableFutureTest1::display)
-                        .whenCompleteAsync((v,t)-> System.out.println(i + "DONE."))
+                        .thenAccept(CompletableFutureTest1::display)
+                        .whenComplete((v, t) -> System.out.println(i + "DONE."))
                 );
     }
 
