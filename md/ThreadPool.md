@@ -209,7 +209,7 @@ public class CompletionServiceTest {
 
   - `thenAccpetBoth(CompletableFuture other,BiConsumer)` : 同时执行两个任务并且最后消费者两个任务返回值
   - `accpetEither(CompletableFuture other,Consumer)` : 同时执行两个任务，执行完毕一个任务之后会将返回值进行Consumer，另外一个任务也会得到执行
-
+  - `applyToEither(CompletableFuture other,Function)` : 同时执行两个任务，执行完毕一个任务之后会将返回值进行Function，另外一个任务也会继续执行。
   - `runAfterBoth(CompletablFuture other,Runnable r)` ： 同时执行两任务，都执行完毕之后调用`Runnable task`
   - `runAfterEither(CompletablFuture other,Runnable r)` : 同时执行两个任务，执行完毕一个任务之后会调用`Runnable Task`，另外一个任务也会得到执行
   - `thenCombiner(CompletablFuture other,Bifunction f)` : 同时执行完毕，进行`BiFunction`

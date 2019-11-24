@@ -1,8 +1,11 @@
 package com.concurrent.juc.threadpool;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
+import java.util.function.BiConsumer;
 
 /**
  * CompletableFuture Method.
@@ -50,8 +53,35 @@ public class CompletableFutureTest3 {
 //        testGetNow();
 //        testJoin();
 //        testComplete();
-        testCompletionExceptionally();
+//        testApplyToEither();
+//        testCompletionExceptionally();
+        testCompletableFutureInAction();
         Thread.currentThread().join();
+    }
+
+    private static void testApplyToEither() {
+        CompletableFuture.supplyAsync(() -> {
+            try {
+                System.out.println("begin ApplyToEither -1");
+                TimeUnit.SECONDS.sleep(2);
+                System.out.println("end ApplyToEither -1");
+                return "Hello";
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }).applyToEither(
+                CompletableFuture.supplyAsync(() -> {
+                    try {
+                        System.out.println("begin ApplyToEither -2");
+                        TimeUnit.SECONDS.sleep(1);
+                        System.out.println("end ApplyToEither -2");
+                        return "World !!";
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                }),
+                String::length
+        ).whenComplete((i, t) -> System.out.println(i));
     }
 
 
@@ -301,5 +331,71 @@ public class CompletableFutureTest3 {
                 .thenRun(() -> System.out.println("finished done."));
         System.out.println("is block ?");
         System.out.println(future.get());
+    }
+
+    public static void testCompletableFutureInAction() {
+        long start = System.currentTimeMillis();
+        CompletableFuture
+                .runAsync(CompletableFutureTest3::checkParams)
+                .exceptionally(t -> {
+                    System.out.println(t.getMessage());
+                    throw new RuntimeException();
+                });
+//    .thenAcceptBothAsync(
+//                        CompletableFuture
+//                                .supplyAsync(CompletableFutureTest3::findAll)
+//                                .whenComplete(getListThrowableBiConsumer())
+//                                .thenComposeAsync(
+//                                        l -> CompletableFuture.runAsync(() -> insert(l))
+//                                                .exceptionally(t -> {
+//                                                    throw new RuntimeException(" insert error");
+//                                                })
+//                                ),
+//                        (check, compose) -> System.out.println("finished!")
+//                );
+    }
+
+    private static BiConsumer<List<String>, Throwable> getListThrowableBiConsumer() {
+        return (l, t) -> {
+            if (t != null) {
+                System.out.println(t.getMessage());
+            } else {
+                l.forEach(System.out::println);
+            }
+        };
+    }
+
+    public static void checkParams() {
+        try {
+            System.out.println("begin check params");
+            int i = 1 / 0;
+            sleep(5);
+            System.out.println("finished! check params");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void insert(List<String> stringList) {
+        System.out.println("begin insert to db");
+        sleep(5);
+        stringList.forEach(System.out::println);
+        System.out.println("finished! insert to db");
+    }
+
+    public static List<String> findAll() {
+        System.out.println("begin findAll from db");
+        sleep(5);
+        List<String> result = Arrays.asList("1", "2", "3", "4", "5");
+        System.out.println("finished! findAll from db");
+        return result;
+    }
+
+    public static void sleep(int seconds) {
+        try {
+            TimeUnit.SECONDS.sleep(seconds);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }
