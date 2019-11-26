@@ -36,5 +36,10 @@
             <version>4.13-beta-3</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>28.1-jre</version>
+        </dependency>
     </dependencies>
 </project>

@@ -39,7 +39,7 @@ public class FailureRunnableReturnTest {
 
         final List<Callable<Integer>> callableList = IntStream.range(0, 5).boxed().map(MyCallable::new).collect(Collectors.toList());
 
-        CompletionService<Integer> completionService = new ExecutorCompletionService<>(executorService);
+        ExecutorCompletionService<Integer> completionService = new ExecutorCompletionService<>(executorService);
 
         callableList.forEach(completionService::submit);
 
