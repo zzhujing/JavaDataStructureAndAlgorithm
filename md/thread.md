@@ -1,7 +1,7 @@
 ### Thread和runnable的关系
 #### runnable是什么？为什么有了Thread还需要Runnable对象？为什么我们重写的是run()方法，却还是要调用start()方法来启动线程呢？
 
-`Runnable`是使用了类似模板模式将一个线程中要实现的业务代码和业务参数都提取到了一个`Runnable`类中，`Thread类`中会判断传入的`Runnable`是否为空，不为空则会调用在调用`start()`方法的时候，被`native`方法的`start0()`回调`Thread#run()`中调用`Runnable target #run()`,如下面代码块所示
+`Runnable`是使用了类似策略模式将一个线程中要实现的业务代码和业务参数都提取到了一个`Runnable`类中，`Thread类`中会判断传入的`Runnable`是否为空，不为空则会调用在调用`start()`方法的时候，被`native`方法的`start0()`回调`Thread#run()`中调用`Runnable target #run()`,如下面代码块所示
 
 ```
     public void run() {
