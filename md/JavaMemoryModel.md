@@ -8,7 +8,7 @@
 >所以在中间设置了CPU Cache层，CPU会将计算的结果放置在里面，然后主存进行同步，不同的线程会有不同的cache
 
 - 所以在Java会自作聪明的在只读的操作里面不进行主存同步，此时需要使用`volatile`来实现数据可见性
-- 且在执行Java指令的时候，jvm会自己进行指令重排（happens-before）的优化，此时可能会导致在多线程环境下的初始化不一致，使用`volatile`可以解决
+- 且在执行Java指令的时候，jvm会自己进行指令重排的优化，此时可能会导致在多线程环境下的初始化不一致，使用`volatile`可以解决，并且在CPU中有happends-before原则。比如读会在写之后。
 ```
 -----Thread-1 --------------
 Object obj = createObj();
