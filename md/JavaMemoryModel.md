@@ -16,7 +16,7 @@ boolean flag = true           //此时可能指令重排导致obj还没初始化
 
 -----Thread-2 --------------
 
-while(!flag){
+while(flag){
 
  // do something about obj
 }
