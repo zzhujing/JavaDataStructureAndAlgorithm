@@ -6,6 +6,6 @@ package com.concurrent.classloader;
  */
 public class ClassLoaderTest {
     public static void main(String[] args) {
-        System.out.println(ClassLoader.getSystemClassLoader());
+        System.out.println(ClassLoader.getSystemClassLoader() == Thread.currentThread().getContextClassLoader());
     }
 }

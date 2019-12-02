@@ -49,7 +49,7 @@ public class Channel {
         this.notifyAll();
     }
 
-    public synchronized Request task() {
+    public synchronized Request take() {
         while (count == 0) {
             try {
                 this.wait();

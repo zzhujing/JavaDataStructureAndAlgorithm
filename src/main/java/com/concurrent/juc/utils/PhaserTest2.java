@@ -6,8 +6,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.IntStream;
 
 /**
- * 演示Pharse的重复使用 -> Phaser会在达到初始化的分区数量后自动reset()
- *
+ * 演示Phaser的重复使用 -> Phaser会在达到初始化的分区数量后自动reset()
+ * <p>
  * {@link Phaser#getPhase()}  获取当前所在的阶段，没进行完一轮await就会自增1
  * {@link Phaser#getArrivedParties()} 获取当前已经完成的分区数
  */
@@ -44,7 +44,7 @@ public class PhaserTest2 {
                 System.out.println(Thread.currentThread().getName() + "-> begin running");
                 TimeUnit.SECONDS.sleep(random.nextInt(5));
                 System.out.println(Thread.currentThread().getName() + "-> end running");
-                System.out.println(phaser.getArrivedParties());
+                System.out.println(phaser.getPhase());
                 phaser.arriveAndAwaitAdvance();
 
                 //automatic reset
@@ -52,14 +52,14 @@ public class PhaserTest2 {
                 System.out.println(Thread.currentThread().getName() + "-> begin bicycle");
                 TimeUnit.SECONDS.sleep(random.nextInt(5));
                 System.out.println(Thread.currentThread().getName() + "-> end bicycle");
-                System.out.println(phaser.getArrivedParties());
+                System.out.println(phaser.getPhase());
                 phaser.arriveAndAwaitAdvance();
 
                 //phase 3
                 System.out.println(Thread.currentThread().getName() + "-> begin jump");
                 TimeUnit.SECONDS.sleep(random.nextInt(5));
                 System.out.println(Thread.currentThread().getName() + "-> end jump");
-                System.out.println(phaser.getArrivedParties());
+                System.out.println(phaser.getPhase());
                 phaser.arriveAndAwaitAdvance();
             } catch (InterruptedException e) {
                 e.printStackTrace();

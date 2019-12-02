@@ -20,7 +20,7 @@ public class WorkerThread extends Thread {
     @Override
     public void run() {
         while (true) {
-            Request request = channel.task();
+            Request request = channel.take();
             System.out.println(Thread.currentThread().getName() + " worker -> " + request.getValue());
             try {
                 Thread.sleep(random.nextInt(100));

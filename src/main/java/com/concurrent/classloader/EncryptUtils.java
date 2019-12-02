@@ -24,8 +24,7 @@ public final class EncryptUtils {
     }
 
     public static void main(String[] args) {
-//        EncryptUtils.encrypt("/Users/hujing/com/concurrent/classloader/MyObject.class","/Users/hujing/com/concurrent/classloader/MyObject1.class");
-
+        EncryptUtils.encrypt("/Users/hujing/IdeaProjects/JavaDataStructureAndAlgorithm/target/classes/com/concurrent/classloader/MyObject.class", "/Users/hujing/IdeaProjects/JavaDataStructureAndAlgorithm/target/classes/com/concurrent/classloader/MyObject1.class");
     }
 
 }

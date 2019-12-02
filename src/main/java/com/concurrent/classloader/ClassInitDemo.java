@@ -24,7 +24,7 @@ import java.util.Random;
  * 6. 启动类
  * <p>
  * ----
- * 1. 子类引用父类静态变量不会初始化自类
+ * 1. 子类引用父类静态变量不会初始化子类
  * 2. 使用数组引用不会初始化
  * 3. 使用final修饰的常量不会初始化
  * 4. 使用final修改的复杂类型在编译阶段无法计算，需要初始化阶段初始化
@@ -32,10 +32,10 @@ import java.util.Random;
 public class ClassInitDemo {
     public static void main(String[] args) throws ClassNotFoundException {
         //反射
-        Class.forName("com.concurrent.classloader.Child");
+//        Class.forName("com.concurrent.classloader.Child");
 
         //子类调用父类静态变量
-//        System.out.println(Child.a);
+        System.out.println(Child.a);
 
         //复杂final类型会初始化
 //        System.out.println(Child.x);
@@ -47,12 +47,14 @@ public class ClassInitDemo {
 class Child extends Obj {
     public static final int child = 1;
     public static final int x = new Random().nextInt(10);
+
     static {
         System.out.println("Child init");
     }
 }
 
 class Obj {
+
     public static int a = 1;
 
     static {

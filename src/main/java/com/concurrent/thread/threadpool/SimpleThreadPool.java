@@ -223,7 +223,6 @@ public class SimpleThreadPool extends Thread {
                     }
                     //从队列中获取一个任务
                     runnable = TASK_QUEUE.removeFirst();
-                    System.out.println("remove -> " + TASK_QUEUE.size());
                 }
                 if (runnable != null) {
                     this.state = TaskState.RUNNING;

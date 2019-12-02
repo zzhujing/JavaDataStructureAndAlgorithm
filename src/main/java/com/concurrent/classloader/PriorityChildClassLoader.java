@@ -9,7 +9,7 @@ public class PriorityChildClassLoader extends ClassLoader {
 
     private String classLoaderName;
 
-    private static final String DEFAULT_LOAD_DIR = "/home/hujing";
+    private static final String DEFAULT_LOAD_DIR = "/Users/hujing";
 
     private final String dir;
 
@@ -63,6 +63,8 @@ public class PriorityChildClassLoader extends ClassLoader {
                 resolveClass(clazz);
             return clazz;
         }
+
+        //priority child classLoader loader class
         try {
             clazz = findClass(name);
         } catch (Exception e) {

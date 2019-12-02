@@ -42,7 +42,6 @@ public class CaptureService {
         return new Thread(() -> {
             System.out.println(name + " -> 开始工作");
             synchronized (CONTROLS) {
-
                 //最多使用五个线程去处理业务
                 while (CONTROLS.size() > MAX_CONTROL) {
                     try {

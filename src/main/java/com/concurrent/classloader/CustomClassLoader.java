@@ -51,11 +51,14 @@ public class CustomClassLoader extends ClassLoader {
         if (!classFile.exists())
             throw new ClassNotFoundException();
 
+        //加载
         byte[] classByteArray = doLoadClass(classFile);
 
         if (classByteArray == null || classByteArray.length == 0)
             throw new ClassNotFoundException("load class byte empty");
 
+
+        //解析
         return this.defineClass(name, classByteArray, 0, classByteArray.length);
 
     }

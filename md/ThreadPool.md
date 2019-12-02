@@ -115,7 +115,7 @@ callableList.stream().filter(c->!((MyCallable)c).isSuccess()).forEach(System.out
 
 - `get()`方法打断的是`caller`线程
 - `get(long timeout)`超时之后任务还是会继续执行.
-- `cncel(boolean mayInterruptIfRunning)` ： 如果为`true`将会打断正在运行的`Task`
+- `cancel(boolean mayInterruptIfRunning)` ： 如果为`true`将会打断正在运行的`Task`
 - `cancel`之后的`Task`无法进行`get()`
 
 `future`的缺点 : 

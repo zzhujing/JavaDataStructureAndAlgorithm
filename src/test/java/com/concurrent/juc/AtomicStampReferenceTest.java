@@ -5,6 +5,9 @@ import org.junit.Test;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.atomic.AtomicStampedReference;
 
+/**
+ * 使用Stamp和引用一起判断是否是这次的节点。
+ */
 public class AtomicStampReferenceTest {
 
     @Test
@@ -14,6 +17,9 @@ public class AtomicStampReferenceTest {
         final Simple ref = stampRef.getReference();
         final int stamp = stampRef.getStamp();
         final Thread t1 = new Thread(() -> {
+            /**
+             * ABA
+             */
             System.out.println(stampRef.compareAndSet(ref, xcc, stampRef.getStamp(), stampRef.getStamp() + 1)); //true
             System.out.println(stampRef.compareAndSet(xcc, ref, stampRef.getStamp(), stampRef.getStamp() + 1)); //true
         });

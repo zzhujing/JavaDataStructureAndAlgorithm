@@ -15,7 +15,7 @@ import java.util.stream.IntStream;
  * W R -> N
  * W W -> N
  */
-public class RDLockTest {
+public class RWLockTest {
 
     private final ReadWriteLock rdLock = new ReentrantReadWriteLock();
     private final List<Long> data = new ArrayList<>();
@@ -23,7 +23,7 @@ public class RDLockTest {
     private final Lock writeLock = rdLock.writeLock();
 
     public static void main(String[] args) {
-        RDLockTest test = new RDLockTest();
+        RWLockTest test = new RWLockTest();
         IntStream.rangeClosed(1, 2)
                 .forEach(i -> new Thread(test::write).start());
     }

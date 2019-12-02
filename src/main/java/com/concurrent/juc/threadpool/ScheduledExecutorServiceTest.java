@@ -17,10 +17,10 @@ public class ScheduledExecutorServiceTest {
     private static final ScheduledThreadPoolExecutor scheduledExecutorService = new ScheduledThreadPoolExecutor(2);
 
     public static void main(String[] args) throws ExecutionException, InterruptedException {
-//        testScheduled();
+        testScheduled();
 //        testScheduleWithCallable();
 //        testScheduleAtFixedRate();
-        testScheduleWithFixedDelay();
+//        testScheduleWithFixedDelay();
     }
 
     /**
@@ -83,7 +83,7 @@ public class ScheduledExecutorServiceTest {
 
     private static void testScheduled() throws InterruptedException {
         //该属性设置了之后针对schedule方法在运行的时候被shutdown了。那么依旧会继续执行完毕。
-        scheduledExecutorService.setExecuteExistingDelayedTasksAfterShutdownPolicy(false);
+        scheduledExecutorService.setExecuteExistingDelayedTasksAfterShutdownPolicy(true);
         scheduledExecutorService.schedule(() -> {
             try {
                 TimeUnit.SECONDS.sleep(2);

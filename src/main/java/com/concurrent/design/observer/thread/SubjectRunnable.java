@@ -1,5 +1,9 @@
 package com.concurrent.design.observer.thread;
 
+import java.security.cert.CertificateNotYetValidException;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author : hujing
  * @date : 2019/11/1
@@ -10,9 +14,11 @@ public abstract class SubjectRunnable implements Runnable {
     //生命周期监听,一般为一个List
     protected ThreadLifeCycleListener listener;
 
+
     public SubjectRunnable(ThreadLifeCycleListener listener) {
         this.listener = listener;
     }
+
     /**
      * 发生状态改变后主动调用的通知方法
      *

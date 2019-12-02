@@ -16,11 +16,11 @@ public class PhaserTest3 {
             @Override
             protected boolean onAdvance(int phase, int registeredParties) {
                 //返回false则会重置parties,否则则不会TimeUnit.SECONDS.sleep(random.nextInt(5));
-                return true;
+                return false;
             }
         };
-        new Thread(new AdvanceTask(phaser,"hj")).start();
-        new Thread(new AdvanceTask(phaser,"xcc")).start();
+        new Thread(new AdvanceTask(phaser, "hj")).start();
+        new Thread(new AdvanceTask(phaser, "xcc")).start();
     }
 
     private static class AdvanceTask extends Thread {

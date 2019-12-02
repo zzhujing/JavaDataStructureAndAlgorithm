@@ -15,8 +15,8 @@ public class CreateThread3 {
             try {
                 add(0);
             } catch (Error e) {
+                e.printStackTrace(); //print stackOverFlow
                 System.out.println(counter);
-                ;
             }
         }, "Custom-Thread", 1 << 24).start();
     }

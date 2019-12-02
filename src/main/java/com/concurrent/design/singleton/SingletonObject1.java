@@ -10,6 +10,7 @@ public class SingletonObject1 {
 
     private SingletonObject1() {
     }
+
     //can't lazy load.
     public static SingletonObject1 getInstance() {
         return instance;

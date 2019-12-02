@@ -16,11 +16,12 @@ public class AtomicIntegerTest {
 
         final AtomicInteger value = new AtomicInteger();
 
-        IntStream.rangeClosed(1, 2)
-                .forEach(i -> new Thread(() -> {
-                    while (value.getAndIncrement() < 50) {
-                        System.out.println(Thread.currentThread().getName() +"->"+value.get());
-                    }
-                }, String.valueOf(i)).start());
+//        IntStream.rangeClosed(1, 2)
+//                .forEach(i -> new Thread(() -> {
+//                    while (value.getAndIncrement() < 50) {
+//                        System.out.println(Thread.currentThread().getName() +"->"+value.get());
+//                    }
+//                }, String.valueOf(i)).start());
+        System.out.println(value.accumulateAndGet(1, Integer::sum));
     }
 }
