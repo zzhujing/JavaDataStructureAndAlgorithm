@@ -35,3 +35,4 @@
 - [使用快排思想在O(n)时间复杂度内获取无序列表的第K大元素](src/main/java/com/algorithm/QuickSortFindNoK.java)
 - [使用栈来判断对称'括号'字符串](src/main/java/com/algorithm/StackCheckStrValidDemo.java)
 - [最小栈](src/main/java/com/algorithm/MinStackDemo.java)
+- [二分法查找以及扩展](src/main/java/com/algorithm/BinarySearchDemo.java)
