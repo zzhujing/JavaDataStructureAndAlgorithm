@@ -1,6 +1,3 @@
----
-typora-root-url: /Users/hujing/Pictures
----
 
 ## 红黑树笔记
 
