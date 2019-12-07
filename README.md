@@ -28,6 +28,7 @@
 - [循环链表实现](src/main/java/com/datastructure/CircularQueueDemo.java)
 - [简单递归实现](src/main/java/com/datastructure/RecursionDemo.java)
 - [跳表的简单实现](src/main/java/com/concurrent/juc/concurrencycontainer/SimpleSkipList.java)
+- [红黑树的基本实现规律总结](md/R-B_Tree.md)
 
 ### 基本算法相关源码链接
 
