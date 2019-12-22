@@ -1,4 +1,4 @@
-package com.algorithm;
+package com.datastructure;
 
 import com.google.common.collect.Lists;
 
@@ -178,7 +178,7 @@ public class BinarySearchTreeDemo<E extends Comparable<E>> {
     }
 
     /**
-     * 查询只有一个子节点的节点
+     * 删除只有一个子节点的节点
      *
      * @param child 要删除的节点
      */
@@ -248,7 +248,7 @@ public class BinarySearchTreeDemo<E extends Comparable<E>> {
     /**
      * 节点类
      *
-     * @param <E>
+     * @param <E>￿
      */
     static class Node<E extends Comparable<E>> {
         E e;

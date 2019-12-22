@@ -4,10 +4,48 @@ import java.math.BigDecimal;
 
 public class BinarySearchDemo {
     public static void main(String[] args) {
-        int[] arr = {4, 5, 6, 7, 1, 2, 3};
-        final int index = findFromCyclicOrderArray(5, arr, 0, arr.length - 1);
-        System.out.println("index -> :" +
-                index + "-> value :" + arr[index]);
+        int[] arr = {4, 5, 6, 7};
+//        final int index = findFromCyclicOrderArray(5, arr, 0, arr.length - 1);
+//        System.out.println("index -> :" +
+//                index + "-> value :" + arr[index]);
+//        System.out.println(sqrt(2.0));
+
+        printPermutations(arr, arr.length, arr.length);
+    }
+
+    /**
+     * 打印全排列
+     * f(1-n) = (最后一位是1 + f(n-1)) + (最后一位是2 + f(n-1))
+     */
+    public static void printPermutations(int[] data, int n, int k) {
+        //当全排列的数量只有1的时候直接打印数组
+        if (k == 1) {
+            for (int i = 0; i < n; ++i) {
+                System.out.print(data[i] + " ");
+            }
+            System.out.println();
+        }
+        for (int i = 0; i < k; ++i) {
+            //一次交换i元素到最后一个位置 -> 相当于固定最后一位
+            int tmp = data[i];
+            data[i] = data[k - 1];
+            data[k - 1] = tmp;
+            //递归全排列其他
+            printPermutations(data, n, k - 1);
+            //需要交换回去
+            tmp = data[i];
+            data[i] = data[k - 1];
+            data[k - 1] = tmp;
+        }
+    }
+
+    public static double sqrt(double c) {
+        if (c < 0) return Double.NaN;
+        double err = 1e-15;
+        double t = c;
+        while (Math.abs(t - c / t) > err * t)
+            t = (c / t + t) / 2.0;
+        return t;
     }
 
     public static int simpleBinarySearch(int obj, int[] source) {
