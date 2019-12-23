@@ -9,7 +9,7 @@ public class KMPStringMatchAlgorithm {
 
     /**
      * kmp算法
-     *
+     *时间复杂度O(n)
      * @param main     主串
      * @param template 模式串
      */
@@ -31,7 +31,7 @@ public class KMPStringMatchAlgorithm {
 
     /**
      * 构建next数组(失效函数)
-     *
+     * 实现复杂度O(m)
      * @param template 模式串
      * @return next数组
      */

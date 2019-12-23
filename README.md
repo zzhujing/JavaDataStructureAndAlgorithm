@@ -32,6 +32,7 @@
 - [红黑树(红左连接)的简单原理](md/R-B_Tree.md)
 - [大顶堆简单实现](src/main/java/com/datastructure/HeapDemo.java)
 - [图的深度广度搜索](src/main/java/com/datastructure/GraphDemo.java)
+- [(Trie)字典树](src/main/java/com/algorithm/TrieTreeDemo.java)
 ### 基本算法相关源码链接
 
 - [基本排序算法Java实现](md/sort.md)
@@ -40,3 +41,5 @@
 - [最小栈](src/main/java/com/algorithm/MinStackDemo.java)
 - [二分法查找以及扩展](src/main/java/com/algorithm/BinarySearchDemo.java)
 - [字符串匹配算法之BM](src/main/java/com/algorithm/BMAlgorithm.java)
+- [字符串匹配算法之KMP](md/StringMatch.md)
+- [字符串匹配算法之AC自动机算法，多模式匹配](md/Ac.md)
