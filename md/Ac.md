@@ -60,7 +60,7 @@
 ### 构建所有节点的`fail`节点
 > 这个有点复杂，其实就是类似KMP算法的思想,如图所示，我们已经知道p节点的fail为q,那么当p的子节点pc所在字符值(假设为c)，当且仅当q.childArr[c-'a']不为null时，那么pc的fail节点即为qc.（这个模式和KMP一样，相当于我们求abcd的最长后缀，已经知道abc的最长后缀为bc，那么当pc =qc ==d的时候，bcd也就是abcd的最长后缀子串了。）
 
-![image-20191224003904737](/Users/hujing/Library/Application Support/typora-user-images/image-20191224003904737.png)
+![image-20191224003904737](../images/fail节点匹配图.png)
 
 
 ```
