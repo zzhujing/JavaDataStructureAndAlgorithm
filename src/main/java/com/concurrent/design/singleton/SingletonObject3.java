@@ -1,19 +1,30 @@
 package com.concurrent.design.singleton;
 
+import java.util.concurrent.TimeUnit;
+import java.util.stream.IntStream;
+
 /**
  * 懒汉式-double-check
  */
 public class SingletonObject3 {
 
-    //可能发生指令重排导致在初始化SingletonObject3的时候，这些对象还未初始化
-    //private Object obj1;
-    //private Object obj2;
 
-    private SingletonObject3() {
-        //init obj1 obj2 spend much time
-    }
 
     private static volatile SingletonObject3 instance;
+
+    //可能发生指令重排导致在初始化SingletonObject3的时候，这些对象还未初始化
+    private Object obj1;
+    private Object obj2;
+
+    private SingletonObject3()  {
+        try {
+            TimeUnit.SECONDS.sleep(5);
+        } catch (InterruptedException e) {
+            System.out.println("interrupt...");
+        }
+        obj1 = new Object();
+        obj2 = new Object();
+    }
 
     //使用double check优化性能，但是在SingletonObject3的初始化还没结束的时候执行了getInstance那么可能会导致空指针异常
     //因为可能还有初始化完毕instance对象就被其他的线程从堆中返回出去了
@@ -32,5 +43,10 @@ public class SingletonObject3 {
             }
         }
         return instance;
+    }
+
+    public static void main(String[] args) {
+        IntStream.rangeClosed(1,1000)
+                .forEach(i->new Thread(()-> System.out.println(SingletonObject3.getInstance())).start());
     }
 }

@@ -15,9 +15,8 @@ public class AtomicReferenceTest {
     @Test
     public void testCreteAtomicReference() {
         AtomicReference<SimpleObject> atomicRef = new AtomicReference<>(new SimpleObject("hujing"));
-
-        System.out.println(atomicRef.compareAndSet(atomicRef.get(), new SimpleObject("xcc")));
         SimpleObject badMan = new SimpleObject("bad man");
+        System.out.println(atomicRef.compareAndSet(atomicRef.get(), badMan));
         System.out.println(atomicRef.compareAndSet(badMan, new SimpleObject("xcc")));
     }
 

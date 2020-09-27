@@ -40,6 +40,8 @@
 - [使用栈来判断对称'括号'字符串](src/main/java/com/algorithm/StackCheckStrValidDemo.java)
 - [最小栈](src/main/java/com/algorithm/MinStackDemo.java)
 - [二分法查找以及扩展](src/main/java/com/algorithm/BinarySearchDemo.java)
+- [字符串匹配算法之BF暴力匹配](src/main/java/com/algorithm/BFAlgorithm.java)
+- [字符串匹配算法之PK(巧妙hash关联相邻模式串)](src/main/java/com/algorithm/PKAlgorithm.java)
 - [字符串匹配算法之BM](src/main/java/com/algorithm/BMAlgorithm.java)
 - [字符串匹配算法之KMP](md/StringMatch.md)
 - [字符串匹配算法之AC自动机算法，多模式匹配](md/Ac.md)

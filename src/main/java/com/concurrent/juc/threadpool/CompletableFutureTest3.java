@@ -54,9 +54,9 @@ public class CompletableFutureTest3 {
 //        testJoin();
 //        testComplete();
 //        testApplyToEither();
-//        testCompletionExceptionally();
-        testCompletableFutureInAction();
-        Thread.currentThread().join();
+        testCompletionExceptionally();
+//        testCompletableFutureInAction();
+//        Thread.currentThread().join();
     }
 
     private static void testApplyToEither() {
@@ -313,7 +313,7 @@ public class CompletableFutureTest3 {
                             }
                         });
         System.out.println("is block ?");
-        System.out.println(future.get());
+        System.out.println("future#get()->"+future.get());
     }
 
     private static void testTransferMethod() throws ExecutionException, InterruptedException {

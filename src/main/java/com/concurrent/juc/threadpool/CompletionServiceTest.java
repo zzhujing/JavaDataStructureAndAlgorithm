@@ -1,7 +1,6 @@
 package com.concurrent.juc.threadpool;
 
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.*;
@@ -29,7 +28,7 @@ public class CompletionServiceTest {
                     return new Event("6", null);
                 }
         );
-        final ExecutorService executorService = Executors.newFixedThreadPool(2);
+        final ExecutorService executorService = Executors.newFixedThreadPool(3);
         final ExecutorCompletionService<Event> executorCompletionService = new ExecutorCompletionService<>(executorService);
         callableList.forEach(executorCompletionService::submit);
 

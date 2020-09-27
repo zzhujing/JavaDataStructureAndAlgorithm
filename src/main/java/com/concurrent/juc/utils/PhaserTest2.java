@@ -6,7 +6,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.IntStream;
 
 /**
- * 演示Phaser的重复使用 -> Phaser会在达到初始化的分区数量后自动reset()
+ * 演示Phaser的重复使用(CyclicBarrier) -> Phaser会在达到初始化的分区数量后自动reset()
  * <p>
  * {@link Phaser#getPhase()}  获取当前所在的阶段，没进行完一轮await就会自增1
  * {@link Phaser#getArrivedParties()} 获取当前已经完成的分区数

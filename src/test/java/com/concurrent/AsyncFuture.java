@@ -4,7 +4,8 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
-public class AsyncFuture<T> implements Future<T> {
+public class
+AsyncFuture<T> implements Future<T> {
 
     private volatile boolean isDone = false;
     private T result;

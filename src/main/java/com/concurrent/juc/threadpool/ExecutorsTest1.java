@@ -69,7 +69,7 @@ public class ExecutorsTest1 {
          * 3. 相当于 newFixedThreadExecutor(1)
          * 4. 相当 new Thread() 来说。使用SingleThreadPoolExecutor能保存任务到执行队列中，并且处理完之后线程不会结束。
          */
-        final ExecutorService executorService = Executors.newSingleThreadExecutor();
+        final ExecutorService executorService =  Executors.newSingleThreadExecutor();
         IntStream.rangeClosed(1, 100)
                 .forEach(i -> {
                     executorService.execute(() -> {
@@ -87,7 +87,7 @@ public class ExecutorsTest1 {
 
     private static void newWorkStealingPoolTest() throws InterruptedException {
         /**
-         * 使用当前所有CPU核心数来进行forkJoin异步调度,并且内部使用分至思想将任务分配到多个BlockingQueue减少资源的抢夺，并且内部会动态调整Thread大小。无法保证任务的执行顺序
+         * 使用当前所有CPU核心数来进行forkJoin异步调度,并且内部使用分治思想将任务分配到多个BlockingQueue减少资源的抢夺，并且内部会动态调整Thread大小。无法保证任务的执行顺序
          */
         final ExecutorService executorService = Executors.newWorkStealingPool();
         IntStream.rangeClosed(1, 100)

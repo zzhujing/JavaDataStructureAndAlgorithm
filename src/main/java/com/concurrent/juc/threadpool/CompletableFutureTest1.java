@@ -13,7 +13,9 @@ import java.util.stream.IntStream;
  */
 public class CompletableFutureTest1 {
     public static void main(String[] args) throws InterruptedException {
-        testCompletableFutureFinishedNestingTaskList();
+//        testCompletableFutureFinishedNestingTaskList();
+//        testCompletableFutureFirst();
+        testExecutorServiceFinishedNestingTaskList2();
         //让主线程join住。否则CompletableFuture中线程池所有的线程为守护线程那么会随着主线程的结束而结束生命周期
         Thread.currentThread().join();
     }
@@ -58,13 +60,14 @@ public class CompletableFutureTest1 {
         //测试使用原生的线程池完成嵌套的任务(在future.get()之后继续进行复杂任务)
         final ExecutorService executorService = Executors.newFixedThreadPool(10);
         final List<Callable<Integer>> tasks = IntStream.range(0, 10).boxed().map(i -> (Callable<Integer>) CompletableFutureTest1::get).collect(Collectors.toList());
-        executorService.invokeAll(tasks).stream().map(f -> {
+        //阻塞的
+        executorService.invokeAll(tasks).parallelStream().map(f -> {
             try {
                 return f.get();
             } catch (InterruptedException | ExecutionException e) {
                 throw new RuntimeException(e);
             }
-        }).parallel().forEach(CompletableFutureTest1::display);
+        }).forEach(CompletableFutureTest1::display);
     }
 
     private static int get() {

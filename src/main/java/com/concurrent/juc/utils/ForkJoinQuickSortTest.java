@@ -20,7 +20,8 @@ public class ForkJoinQuickSortTest {
         }
 //        testForkJoin(data); //5441ms
         long startTime = System.currentTimeMillis();
-        testSingleThread(data); //41743ms
+//        testSingleThread(data); //41743ms
+        Arrays.sort(data); //还是jdk的快 640ms
         System.out.println((System.currentTimeMillis() - startTime) + "ms");
     }
 

@@ -12,8 +12,8 @@ import java.util.concurrent.*;
  */
 public class FutureTest {
     public static void main(String[] args) throws InterruptedException, ExecutionException {
-        testGetTimeout();
-//        testRunningIfCancel();
+//        testGetTimeout();
+        testRunningIfCancel();
     }
 
     private static void testGetTimeout() throws ExecutionException, InterruptedException {

@@ -17,20 +17,20 @@ public class ThreadExceptionCaughtDemo {
             new MyThreadFactory()
     );
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws InterruptedException, ExecutionException {
         final Future<?> f1 = service.submit((Callable<? extends Object>) () -> {
             throw new RuntimeException("throws error");
         });
         final Future<?> f2 = service.submit(() -> System.out.println("execute success!"));
         service.shutdown();
         service.awaitTermination(1, TimeUnit.MINUTES);
-        try {
+//        try {
             f1.get();
             f2.get();
-        } catch (ExecutionException e) {
-            System.out.println("caught thread exception..");
-            e.printStackTrace();
-        }
+//        } catch (ExecutionException e) {
+//            System.out.println("caught thread exception..");
+//            e.printStackTrace();
+//        }
 
     }
 

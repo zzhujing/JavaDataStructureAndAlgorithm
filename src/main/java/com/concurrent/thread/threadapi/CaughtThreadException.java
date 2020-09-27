@@ -1,7 +1,5 @@
 package com.concurrent.thread.threadapi;
 
-import java.util.Arrays;
-
 /**
  * @author : hujing
  * @date : 2019/10/29
@@ -29,9 +27,9 @@ public class CaughtThreadException {
 
 
         //遍历线程堆栈调用信息
-        Arrays.stream(t.getStackTrace()).forEach(e -> {
-            System.out.println(e.getClassName() + ": " + e.getClassName() + ": " + e.getLineNumber());
-        });
+//        Arrays.stream(t.getStackTrace()).forEach(e -> {
+//            System.out.println(e.getClassName() + ": " + e.getClassName() + ": " + e.getLineNumber());
+//        });
     }
 
     private static void m1() {

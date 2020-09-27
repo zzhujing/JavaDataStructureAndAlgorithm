@@ -21,7 +21,6 @@ public class AtomicBooleanTest {
         }).start();
 
         Thread.sleep(2000);
-
         flag.set(true);
 //        flag = true;
     }

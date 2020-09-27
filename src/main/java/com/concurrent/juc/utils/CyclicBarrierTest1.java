@@ -37,8 +37,17 @@ public class CyclicBarrierTest1 {
             }
         }).start();
 
+        new Thread(() -> {
+            try {
+                Thread.sleep(5000);
+                cyclicBarrier.await();
+            } catch (InterruptedException | BrokenBarrierException e) {
+                e.printStackTrace();
+            }
+        }).start();
+
         TimeUnit.MILLISECONDS.sleep(100);
-        System.out.println(cyclicBarrier.getNumberWaiting());//0
+        System.out.println(cyclicBarrier.getNumberWaiting());//1
         System.out.println(cyclicBarrier.getParties()); //2
         System.out.println(cyclicBarrier.isBroken()); //false
         //reset

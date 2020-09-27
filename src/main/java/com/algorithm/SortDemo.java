@@ -9,7 +9,8 @@ public class SortDemo {
     public static void main(String[] args) {
         int[] source = {2, 12, 4, 44, 3, 11, 3, 5, 23, 43};
 //        selectSort(source, source.length);
-        bucketSort(source, source.length);
+//        bucketSort(source, source.length);
+        quickSort(source,source.length);
         System.out.println(Arrays.toString(source));
     }
 
@@ -201,6 +202,7 @@ public class SortDemo {
                 swap(arr, lastLessThanPivotValueIndex++, i);
             }
         }
+        //交换pivot和lastLessThanPivotValueIndex
         swap(arr, lastLessThanPivotValueIndex, end);
         return lastLessThanPivotValueIndex;
     }

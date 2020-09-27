@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
  * 3. anyOf()
  * 4. allOf()
  * 5. completableFuture()
- *
+ * <p>
  * 几个Api
  * thenAccept() / thenAcceptAsync() -> 接受一个Consumer
  * whenComplete() / whenCompleteAsync() -> 完成的时候执行
@@ -20,7 +20,8 @@ import java.util.concurrent.TimeUnit;
  */
 public class CompletableFutureTest2 {
     public static void main(String[] args) throws InterruptedException, ExecutionException {
-        final Future<?> future = allOf();
+//        final Future<?> future = allOf();
+        Future<?> future = anyOf();
         System.out.println("->" + future.get());
         Thread.currentThread().join();
     }
@@ -83,6 +84,11 @@ public class CompletableFutureTest2 {
                             }
                         })
                         .whenComplete((v, t) -> System.out.println("task 2 finished!"))
+        ).thenAcceptBoth(
+                CompletableFuture.runAsync(() -> {
+                    System.out.println("AnOther..");
+                }),
+                (t1, t2) -> System.out.println(t1)
         );
     }
 

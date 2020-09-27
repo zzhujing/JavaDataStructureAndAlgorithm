@@ -1,7 +1,5 @@
 package com.algorithm;
 
-import com.sun.xml.internal.fastinfoset.tools.XML_SAX_StAX_FI;
-
 /**
  * 回溯算法demo
  * 回溯算法其实就是暴力枚举法，递归出所有路线，然后通过剪枝的方式来在找到结果的时候进行退出递归处理。
@@ -103,7 +101,7 @@ public class BackTracingAlgorithmDemo {
      * m -> 物品总值
      */
     public void package0Or1Question(int i, int sum, int weightSum, Package[] items, int n, int m) {
-        //当已经无法防止，则停止递归(剪枝)
+        //当已经无法放置，则停止递归(剪枝)
         if (sum >= m || i == n) {
             max = Math.max(sum, max);
             priceMax = Math.max(weightSum, priceMax);

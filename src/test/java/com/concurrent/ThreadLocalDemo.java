@@ -24,7 +24,7 @@ public class ThreadLocalDemo {
     public static String getThreadName() throws InterruptedException {
         TimeUnit.SECONDS.sleep(2);
         System.out.println("Main->" + Thread.currentThread().getName());
-        return "from threadLocal ->" + threadLocal.get();
+        return Thread.currentThread().getName() + " : from threadLocal ->" + threadLocal.get();
     }
 
     public static void setThreadName() {
